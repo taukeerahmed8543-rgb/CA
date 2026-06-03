@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinSaathi — आपका CA & Financial Advisor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --dark: #0D0D0D;
+    --dark2: #141414;
+    --dark3: #1C1C1C;
+    --dark4: #242424;
+    --text: #F0EDE8;
+    --muted: #888880;
+    --accent: #4CAF87;
+    --accent2: #3D9970;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    transition: all 0.3s;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--text); }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 36px;
+  }
+
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--dark) !important;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-weight: 600 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--dark) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(76,175,135,0.06) 0%, transparent 50%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  }
+
+  .hero-content { position: relative; max-width: 680px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+    position: relative;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 520px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--dark);
+    padding: 14px 32px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    padding: 14px 32px;
+    border: 1px solid rgba(240,237,232,0.2);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .hero-stats {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .stat-card {
+    background: var(--dark3);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 12px;
+    padding: 24px 28px;
+    text-align: center;
+    min-width: 160px;
+    transition: all 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--gold);
+    transform: translateX(-4px);
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION COMMON */
+  section { padding: 100px 60px; }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  /* PLANS */
+  .plans { background: var(--dark2); }
+
+  .plans-header { text-align: center; margin-bottom: 60px; }
+  .plans-header .section-sub { margin: 0 auto; }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .plan-card {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 36px 28px;
+    position: relative;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .plan-card:hover {
+    border-color: rgba(201,168,76,0.3);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .plan-card.featured {
+    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+    border-color: var(--gold);
+  }
+
+  .plan-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    border-radius: 100px;
+  }
+
+  .plan-name {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .plan-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .plan-price span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .plan-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .plan-features {
+    list-style: none;
+    margin-bottom: 32px;
+  }
+
+  .plan-features li {
+    font-size: 0.88rem;
+    color: var(--text);
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .plan-features li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .plan-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(201,168,76,0.4);
+    background: transparent;
+    color: var(--gold);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .plan-btn:hover, .plan-card.featured .plan-btn {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+
+  .service-card {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 36px 32px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .service-card:hover { border-color: rgba(201,168,76,0.2); transform: translateY(-4px); }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .service-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .service-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold);
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  /* HOW IT WORKS */
+  .how { background: var(--dark2); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 60px;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent);
+    opacity: 0.3;
+  }
+
+  .step {
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .step-num {
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: var(--dark2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1rem;
+  }
+
+  .step-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+
+  .testimonial {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s;
+  }
+
+  .testimonial:hover {
+    border-color: rgba(201,168,76,0.2);
+  }
+
+  .stars {
+    color: var(--gold);
+    font-size: 1rem;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+
+  .testimonial-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .author-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--dark);
+    flex-shrink: 0;
+  }
+
+  .author-name { font-weight: 600; font-size: 0.9rem; }
+  .author-role { font-size: 0.8rem; color: var(--muted); }
+
+  /* TRUST BAR */
+  .trust-bar {
+    background: var(--dark3);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .trust-item {
+    text-align: center;
+  }
+
+  .trust-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+
+  .trust-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* FAQ */
+  .faq-list { margin-top: 60px; max-width: 800px; }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    padding: 24px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    transition: color 0.2s;
+  }
+
+  .faq-question:hover { color: var(--gold); }
+
+  .faq-icon {
+    color: var(--gold);
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+    font-weight: 300;
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+  }
+
+  .faq-answer.open { max-height: 300px; padding-bottom: 20px; }
+
+  .faq-answer p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(76,175,135,0.06) 100%);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    text-align: center;
+    padding: 100px 60px;
+  }
+
+  .cta-section .section-title { margin-bottom: 20px; }
+  .cta-section .section-sub { margin: 0 auto 40px; text-align: center; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark2);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 60px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 40px;
+  }
+
+  .footer-brand .logo { font-size: 1.4rem; display: block; margin-bottom: 12px; }
+
+  .footer-brand p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+
+  .footer-col ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul a:hover { color: var(--text); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 200;
+    background: #25D366;
+    color: white;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    transition: all 0.3s;
+  }
+
+  .whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(37,211,102,0.5);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--dark3);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 48px;
+    max-width: 480px;
+    width: 90%;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+  }
+
+  .modal-overlay.active .modal { transform: translateY(0); }
+
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+
+  .modal p { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-group input, .form-group select {
+    width: 100%;
+    background: var(--dark4);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text);
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--gold);
+  }
+
+  .form-group select option { background: var(--dark4); }
+
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 24px;
+    background: none; border: none;
+    color: var(--muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover { color: var(--text); }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    nav ul { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-stats { display: none; }
+    section { padding: 70px 24px; }
+    .plans-grid { grid-template-columns: 1fr 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .steps::before { display: none; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .trust-bar { flex-wrap: wrap; gap: 24px; padding: 32px 24px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Fin<span>Saathi</span></div>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#plans">Plans</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#" class="nav-cta" onclick="openModal()">Free Consultation</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🇮🇳 India का Trusted Platform</div>
+    <h1>आपका <em>CA & Advisor</em> — सिर्फ ₹199/माह</h1>
+    <p>Tax filing से लेकर financial planning तक — एक dedicated expert आपके साथ। कोई hidden fees नहीं, कोई confusion नहीं।</p>
+    <div class="hero-actions">
+      <a href="#plans" class="btn-primary">Plan देखें →</a>
+      <button class="btn-outline" onclick="openModal()">Free Demo लें</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <span class="stat-num">50K+</span>
+      <div class="stat-label">Happy Clients</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">₹12Cr+</span>
+      <div class="stat-label">Tax Saved</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">98%</span>
+      <div class="stat-label">Satisfaction</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <span class="trust-num">500+</span>
+    <div class="trust-label">Registered CAs</div>
+  </div>
+  <div class="trust-item">
+    <span class="trust-num">24 hrs</span>
+    <div class="trust-label">Response Time</div>
+  </div>
+  <div class="trust-item">
+    <span class="trust-num">100%</span>
+    <div class="trust-label">Secure & Private</div>
+  </div>
+  <div class="trust-item">
+    <span class="trust-num">28</span>
+    <div class="trust-label">States Covered</div>
+  </div>
+  <div class="trust-item">
+    <span class="trust-num">Hindi + 10</span>
+    <div class="trust-label">Languages</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <span class="section-label">Our Services</span>
+  <h2 class="section-title">सब कुछ एक जगह</h2>
+  <p class="section-sub">CA services से लेकर investment advice तक — हर financial ज़रूरत के लिए experts ready हैं।</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">📊</span>
+      <h3 class="service-title">ITR Filing</h3>
+      <p class="service-desc">Salaried, Business, NRI — सभी के लिए accurate और on-time ITR filing। Maximum refund guarantee।</p>
+      <div class="service-tags">
+        <span class="tag">ITR-1 to ITR-7</span>
+        <span class="tag">NRI</span>
+        <span class="tag">Business</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🧾</span>
+      <h3 class="service-title">GST Services</h3>
+      <p class="service-desc">GST registration, monthly/quarterly filing, GST audit और notice handling — सब handle करते हैं।</p>
+      <div class="service-tags">
+        <span class="tag">Registration</span>
+        <span class="tag">Filing</span>
+        <span class="tag">Audit</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💼</span>
+      <h3 class="service-title">Business Registration</h3>
+      <p class="service-desc">Pvt Ltd, LLP, Proprietorship, Partnership — जो भी structure चाहिए, legally register करें।</p>
+      <div class="service-tags">
+        <span class="tag">Pvt Ltd</span>
+        <span class="tag">LLP</span>
+        <span class="tag">MSME</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📈</span>
+      <h3 class="service-title">Investment Planning</h3>
+      <p class="service-desc">Goals के हिसाब से Mutual Fund, SIP, Insurance review — unbiased advice, no hidden commission।</p>
+      <div class="service-tags">
+        <span class="tag">Mutual Fund</span>
+        <span class="tag">SIP</span>
+        <span class="tag">ELSS</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏠</span>
+      <h3 class="service-title">Loan Advisory</h3>
+      <p class="service-desc">Home loan, business loan, personal loan — कौन सा लें, कितना लें, कब लें — expert guidance।</p>
+      <div class="service-tags">
+        <span class="tag">Home Loan</span>
+        <span class="tag">Business</span>
+        <span class="tag">EMI Planning</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🛡️</span>
+      <h3 class="service-title">Notice Handling</h3>
+      <p class="service-desc">Income Tax या GST department का notice आया? Panic मत करें — हमारे CA handle करेंगे।</p>
+      <div class="service-tags">
+        <span class="tag">IT Notice</span>
+        <span class="tag">Scrutiny</span>
+        <span class="tag">Appeals</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="plans" id="plans">
+  <div class="plans-header">
+    <span class="section-label">Pricing</span>
+    <h2 class="section-title">Simple, Transparent Pricing</h2>
+    <p class="section-sub">कोई hidden fees नहीं। कोई surprise नहीं। जो plan चुनें, वही pay करें।</p>
+  </div>
+  <div class="plans-grid">
+    <div class="plan-card">
+      <div class="plan-name">Basic</div>
+      <div class="plan-price">₹199 <span>/माह</span></div>
+      <p class="plan-desc">Salaried individuals के लिए perfect</p>
+      <ul class="plan-features">
+        <li>ITR Filing (Salary)</li>
+        <li>Tax Saving Tips</li>
+        <li>Email Support</li>
+        <li>Form 16 Analysis</li>
+        <li>Tax Calendar Alerts</li>
+      </ul>
+      <button class="plan-btn" onclick="openModal()">शुरू करें</button>
+    </div>
+    <div class="plan-card featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Standard</div>
+      <div class="plan-price">₹499 <span>/माह</span></div>
+      <p class="plan-desc">Freelancers & small business owners</p>
+      <ul class="plan-features">
+        <li>ITR + GST Filing</li>
+        <li>2 CA Calls/माह</li>
+        <li>Investment Review</li>
+        <li>WhatsApp Support</li>
+        <li>Dedicated CA</li>
+        <li>Financial Health Score</li>
+      </ul>
+      <button class="plan-btn" onclick="openModal()">शुरू करें</button>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Premium</div>
+      <div class="plan-price">₹999 <span>/माह</span></div>
+      <p class="plan-desc">Growing businesses & HNIs</p>
+      <ul class="plan-features">
+        <li>Unlimited CA Calls</li>
+        <li>Full Financial Planning</li>
+        <li>GST + TDS + Payroll</li>
+        <li>Priority Support</li>
+        <li>Retirement Planning</li>
+        <li>Insurance Audit</li>
+      </ul>
+      <button class="plan-btn" onclick="openModal()">शुरू करें</button>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Business</div>
+      <div class="plan-price">₹1,999 <span>/माह</span></div>
+      <p class="plan-desc">Complete business accounting</p>
+      <ul class="plan-features">
+        <li>Full Accounting</li>
+        <li>Payroll Management</li>
+        <li>MCA Compliance</li>
+        <li>Dedicated Team</li>
+        <li>Quarterly Review</li>
+        <li>Annual Audit Support</li>
+      </ul>
+      <button class="plan-btn" onclick="openModal()">शुरू करें</button>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <span class="section-label">Process</span>
+  <h2 class="section-title">कैसे काम करता है?</h2>
+  <p class="section-sub">4 simple steps में आपका financial life organized हो जाएगा।</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3 class="step-title">Sign Up करें</h3>
+      <p class="step-desc">2 मिनट में profile बनाएं। Income, goals, और ज़रूरत बताएं।</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3 class="step-title">CA Assign हो</h3>
+      <p class="step-desc">आपकी profile के हिसाब से एक dedicated CA और Advisor आपसे connect होगा।</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3 class="step-title">Documents Share करें</h3>
+      <p class="step-desc">Securely documents upload करें। WhatsApp, app या email — जो easy हो।</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3 class="step-title">Relax करें</h3>
+      <p class="step-desc">बाकी सब हम handle करेंगे। Deadlines, notices, planning — सब कुछ।</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="reviews">
+  <span class="section-label">Testimonials</span>
+  <h2 class="section-title">लोग क्या कहते हैं</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"पहले CA ढूंढना बहुत मुश्किल था। FinSaathi से ₹499/माह में dedicated CA मिला जो WhatsApp पर instantly reply करता है। ITR में ₹45,000 refund मिला!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">R</div>
+        <div>
+          <div class="author-name">Rahul Sharma</div>
+          <div class="author-role">Software Engineer, Pune</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"मेरे छोटे business के लिए GST और ITR दोनों handle करते हैं। पहले ₹15,000/year CA को देती थी, अब ₹999/माह में बहुत better service मिलती है।"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">P</div>
+        <div>
+          <div class="author-name">Priya Agarwal</div>
+          <div class="author-role">Boutique Owner, Jaipur</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Income Tax notice आया था, बहुत घबराया था। FinSaathi के CA ने 3 दिन में notice resolve करवाया। Highly recommend!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">A</div>
+        <div>
+          <div class="author-name">Amit Verma</div>
+          <div class="author-role">Freelancer, Delhi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background: var(--dark2);">
+  <span class="section-label">FAQ</span>
+  <h2 class="section-title">अक्सर पूछे जाने वाले सवाल</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        क्या मेरा data secure है?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>हाँ, बिल्कुल। हम bank-level 256-bit SSL encryption use करते हैं। आपके documents और financial data को हम कभी third party के साथ share नहीं करते। हमारे servers India में हैं और SEBI guidelines follow करते हैं।</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        क्या CA real हैं या AI?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>हमारे सभी CAs ICAI registered real professionals हैं। AI सिर्फ basic queries और document processing में help करता है। Complex matters और consultations के लिए हमेशा real CA available है।</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Subscription cancel कैसे करें?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>कभी भी, बिना किसी penalty के cancel कर सकते हैं। App या WhatsApp पर message करें — 24 hours में cancel हो जाएगा। Remaining days का refund proportionally मिलता है।</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Hindi में service मिलती है?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>हाँ! Hindi सहित 11 Indian languages में service available है — Hindi, English, Tamil, Telugu, Kannada, Marathi, Bengali, Gujarati, Punjabi, Malayalam और Odia।</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Basic plan में ITR filing included है?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <p>हाँ, Basic plan (₹199/माह) में salaried individuals के लिए ITR-1 filing included है। Business income, capital gains या complex cases के लिए Standard या Premium plan लेना होगा।</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <span class="section-label">Get Started</span>
+  <h2 class="section-title">आज ही शुरू करें — <em style="color:var(--gold)">Free</em></h2>
+  <p class="section-sub">पहले 30 दिन free। कोई credit card नहीं चाहिए। अभी sign up करें।</p>
+  <button class="btn-primary" onclick="openModal()" style="font-size:1.1rem; padding: 16px 40px;">Free Consultation Book करें →</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">Fin<span>Saathi</span></span>
+      <p>India का सबसे affordable CA & Financial Advisor platform। 50,000+ families का trust।</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">ITR Filing</a></li>
+        <li><a href="#">GST Filing</a></li>
+        <li><a href="#">Business Registration</a></li>
+        <li><a href="#">Investment Planning</a></li>
+        <li><a href="#">Notice Handling</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our CAs</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 FinSaathi. All rights reserved. ICAI Affiliated Platform.</p>
+    <p style="color: var(--muted);">Made with ❤️ for Bharat</p>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="#" class="whatsapp-float" title="WhatsApp पर बात करें">💬</a>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Free Consultation बुक करें</h2>
+    <p>30 मिनट का free call — कोई obligation नहीं।</p>
+    <div class="form-group">
+      <input type="text" placeholder="आपका नाम *" />
+    </div>
+    <div class="form-group">
+      <input type="tel" placeholder="Mobile Number *" />
+    </div>
+    <div class="form-group">
+      <select>
+        <option value="" disabled selected>आपको क्या चाहिए?</option>
+        <option>ITR Filing</option>
+        <option>GST Services</option>
+        <option>Business Registration</option>
+        <option>Investment Planning</option>
+        <option>Notice Handling</option>
+        <option>Complete Financial Planning</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="आपका शहर" />
+    </div>
+    <button class="btn-primary" style="width:100%; margin-top:8px; font-size:1rem;" onclick="submitForm()">
+      Call Schedule करें →
+    </button>
+    <p style="margin-top:16px; font-size:0.78rem; text-align:center;">🔒 आपका data 100% secure है। Spam नहीं करेंगे।</p>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  function submitForm() {
+    closeModal();
+    setTimeout(() => alert('✅ शुक्रिया! हमारा CA 24 घंटों में call करेगा।'), 200);
+  }
+
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const icon = btn.querySelector('.faq-icon');
+    const isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-icon').forEach(i => { i.textContent = '+'; i.style.transform = ''; });
+    if (!isOpen) {
+      answer.classList.add('open');
+      icon.textContent = '−';
+    }
+  }
+
+  // Scroll animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-card, .plan-card, .testimonial, .step').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
